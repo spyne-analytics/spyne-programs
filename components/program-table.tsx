@@ -52,6 +52,82 @@ const priorityColors: Record<string, string> = {
   Low: "bg-muted text-muted-foreground",
 }
 
+// Dynamic color assignment for owners
+const getOwnerColor = (owner: string): string => {
+  const colors = [
+    "bg-blue-100 text-blue-800",
+    "bg-purple-100 text-purple-800", 
+    "bg-emerald-100 text-emerald-800",
+    "bg-amber-100 text-amber-800",
+    "bg-indigo-100 text-indigo-800",
+    "bg-rose-100 text-rose-800",
+    "bg-teal-100 text-teal-800",
+    "bg-violet-100 text-violet-800",
+    "bg-orange-100 text-orange-800",
+    "bg-cyan-100 text-cyan-800",
+    "bg-lime-100 text-lime-800",
+    "bg-fuchsia-100 text-fuchsia-800",
+    "bg-sky-100 text-sky-800",
+    "bg-stone-100 text-stone-800",
+    "bg-red-100 text-red-800",
+    "bg-yellow-100 text-yellow-800",
+    "bg-zinc-100 text-zinc-800",
+    "bg-neutral-100 text-neutral-800",
+    "bg-slate-100 text-slate-800",
+    "bg-gray-100 text-gray-800",
+    "bg-green-100 text-green-800",
+    "bg-pink-100 text-pink-800",
+  ];
+  
+  // Simple hash function to consistently assign colors
+  let hash = 0;
+  for (let i = 0; i < owner.length; i++) {
+    const char = owner.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  
+  return colors[Math.abs(hash) % colors.length];
+}
+
+// Dynamic color assignment for teams
+const getTeamColor = (team: string): string => {
+  const colors = [
+    "bg-blue-100 text-blue-800",
+    "bg-purple-100 text-purple-800",
+    "bg-pink-100 text-pink-800", 
+    "bg-green-100 text-green-800",
+    "bg-orange-100 text-orange-800",
+    "bg-indigo-100 text-indigo-800",
+    "bg-emerald-100 text-emerald-800",
+    "bg-rose-100 text-rose-800",
+    "bg-slate-100 text-slate-800",
+    "bg-cyan-100 text-cyan-800",
+    "bg-amber-100 text-amber-800",
+    "bg-violet-100 text-violet-800",
+    "bg-teal-100 text-teal-800",
+    "bg-red-100 text-red-800",
+    "bg-lime-100 text-lime-800",
+    "bg-fuchsia-100 text-fuchsia-800",
+    "bg-sky-100 text-sky-800",
+    "bg-stone-100 text-stone-800",
+    "bg-yellow-100 text-yellow-800",
+    "bg-zinc-100 text-zinc-800",
+    "bg-neutral-100 text-neutral-800",
+    "bg-gray-100 text-gray-800",
+  ];
+  
+  // Simple hash function to consistently assign colors
+  let hash = 0;
+  for (let i = 0; i < team.length; i++) {
+    const char = team.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  
+  return colors[Math.abs(hash) % colors.length];
+}
+
 export function ProgramTable({ programs, sortState, onSort }: ProgramTableProps) {
   const [columnWidths, setColumnWidths] = useState({
     goals: 200,
@@ -206,11 +282,13 @@ export function ProgramTable({ programs, sortState, onSort }: ProgramTableProps)
               >
                 <div className="whitespace-pre-wrap break-words">{program.tasks}</div>
               </td>
-              <td
-                className="px-2.5 py-2 text-xs text-foreground border-r border-border/40"
-                style={{ width: columnWidths.team }}
-              >
-                {program.team}
+              <td className="px-2.5 py-2 border-r border-border/40" style={{ width: columnWidths.team }}>
+                <Badge
+                  variant="secondary"
+                  className={`${getTeamColor(program.team)} border-0 text-xs font-medium`}
+                >
+                  {program.team}
+                </Badge>
               </td>
               <td className="px-2.5 py-2 border-r border-border/40" style={{ width: columnWidths.priority }}>
                 <Badge
@@ -220,11 +298,13 @@ export function ProgramTable({ programs, sortState, onSort }: ProgramTableProps)
                   {program.priority}
                 </Badge>
               </td>
-              <td
-                className="px-2.5 py-2 text-xs text-foreground border-r border-border/40"
-                style={{ width: columnWidths.owner }}
-              >
-                <div className="whitespace-pre-wrap break-words">{program.owner}</div>
+              <td className="px-2.5 py-2 border-r border-border/40" style={{ width: columnWidths.owner }}>
+                <Badge
+                  variant="secondary"
+                  className={`${getOwnerColor(program.owner)} border-0 text-xs font-medium`}
+                >
+                  {program.owner}
+                </Badge>
               </td>
               <td className="px-2.5 py-2 border-r border-border/40" style={{ width: columnWidths.status }}>
                 <Badge variant="secondary" className={`${statusColors[program.status]} border-0 text-xs font-medium`}>
