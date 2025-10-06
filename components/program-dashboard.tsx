@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Search, RefreshCw } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -16,6 +17,7 @@ interface SortState {
 }
 
 export default function ProgramDashboard() {
+  const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [priorityFilter, setPriorityFilter] = useState("all")
@@ -24,6 +26,14 @@ export default function ProgramDashboard() {
   const [sortState, setSortState] = useState<SortState>({ column: '', direction: 'none' })
 
   const { programs, filterOptions, loading, error, refreshData } = usePrograms()
+
+  // Handle tab query parameter
+  useEffect(() => {
+    const tabParam = searchParams.get('tab')
+    if (tabParam) {
+      setTeamFilter(tabParam)
+    }
+  }, [searchParams])
 
   const handleSort = (column: string) => {
     setSortState(prev => {
