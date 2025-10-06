@@ -31,9 +31,15 @@ export default function ProgramDashboard() {
   useEffect(() => {
     const tabParam = searchParams.get('tab')
     if (tabParam) {
-      setTeamFilter(tabParam)
+      // Find matching team (case insensitive)
+      const matchingTeam = filterOptions.teams.find(team => 
+        team.toLowerCase() === tabParam.toLowerCase()
+      )
+      if (matchingTeam) {
+        setTeamFilter(matchingTeam)
+      }
     }
-  }, [searchParams])
+  }, [searchParams, filterOptions.teams])
 
   const handleSort = (column: string) => {
     setSortState(prev => {

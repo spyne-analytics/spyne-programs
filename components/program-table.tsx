@@ -230,9 +230,9 @@ export function ProgramTable({ programs, sortState, onSort }: ProgramTableProps)
       <table className="w-full border-collapse">
         <thead className="sticky top-0 z-10 bg-muted/50 backdrop-blur-sm">
           <tr className="border-b border-border">
-            <SortableHeader column="goals" style={{ width: columnWidths.goals }}>
-              Goals
-            </SortableHeader>
+             <SortableHeader column="goals" style={{ width: columnWidths.goals }}>
+               Programs
+             </SortableHeader>
             <SortableHeader column="tasks" style={{ width: columnWidths.tasks }}>
               Tasks
             </SortableHeader>
